@@ -1,7 +1,7 @@
 PVector circleSize;
 PVector vel;
 
-int numCircles = 5;
+int numCircles = 6;
 
 PVector [] circlePos = new PVector[numCircles];
 PVector [] speed = new PVector[numCircles];
@@ -10,7 +10,8 @@ color [] colour = new color [] {
   color(0, 255, 0),
   color(0, 0, 255),
   color(255, 255, 0),
-  color(255, 0, 255)
+  color(255, 0, 255),
+  color(0, 255, 255)
 };
 
 void setup() {
