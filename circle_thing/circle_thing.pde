@@ -4,6 +4,7 @@ PVector vel;
 int numCircles = 6;
 
 PVector [] speed = new PVector[numCircles];
+ArrayList<PVector> speedList = new ArrayList<PVector>();
 ArrayList<PVector> pList = new ArrayList<PVector>();
 color [] colour = new color [] {
   color(255, 0, 0),
@@ -20,7 +21,7 @@ void setup() {
   vel = new PVector(-0, 0);
   
   for (int i = 0; i < numCircles; i++) {
-    speed[i] = new PVector((i + 1) * -2, 0);
+    speedList.add(new PVector((i + 1) * -2, 0));
     pList.add(new PVector((displayWidth - 100) + 50 * i, displayHeight - 100));
   }
 }
@@ -28,7 +29,7 @@ void setup() {
 void draw() {
   //update
   for (int i = 0; i < numCircles; i++) {
-    pList.get(i).add(speed[i]);
+    pList.get(i).add(speedList.get(i));
     pList.get(i).add(vel);
   }
   
