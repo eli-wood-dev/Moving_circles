@@ -4,6 +4,7 @@ PVector mousePos;
 PVector crossSize;
 
 int numCircles = 6;
+int score = 0;
 
 PVector [] speed = new PVector[numCircles];
 ArrayList<PVector> speedList = new ArrayList<PVector>();
@@ -43,8 +44,19 @@ void crosshair(PVector crosshairPos, PVector crosshairSize) {
   line(crosshairPos.x, crosshairPos.y - crosshairSize.y/2, crosshairPos.x, crosshairPos.y + crosshairSize.y/2);
 }
 
+void mouseClicked(){
+  for (PVector p : pList) {
+    if (dist(p.x, p.y, mousePos.x, mousePos.y) <= circleSize.x/2) {
+      score += 1;
+    }
+  }
+}
+
 void draw() {
   //update
+  circleSize.x = 100;
+  circleSize.y = 100;
+  
   for (int i = 0; i < numCircles; i++) {
     pList.get(i).add(speedList.get(i));
     pList.get(i).add(vel);
@@ -70,4 +82,8 @@ void draw() {
   }
   
   crosshair(mousePos, crossSize);
+  
+  fill(0);
+  textSize(50);
+  text(score, displayWidth - 100, 100);
 }
