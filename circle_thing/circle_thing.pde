@@ -6,10 +6,12 @@ PVector mousePos;
 int numCircles = 6;
 int score = 0;
 int crosshairSize = 50;
+float randomY = 0;
 
 PVector [] speed = new PVector[numCircles];
 ArrayList<PVector> speedList = new ArrayList<PVector>();
 ArrayList<PVector> pList = new ArrayList<PVector>();
+ArrayList<PVector> startPos = new ArrayList<PVector>();
 color [] colour = new color [] {
   color(255, 0, 0),
   color(0, 255, 0),
@@ -33,8 +35,10 @@ void setup() {
   mousePos = new PVector(0, 0);
   
   for (int i = 0; i < numCircles; i++) {
+    randomY = random(0+circleSize.y, displayHeight-circleSize.y);
+    startPos.add(new PVector((displayWidth + 100) + 50 * i, randomY));
     speedList.add(new PVector((i + 1) * -2, 0));
-    pList.add(new PVector((displayWidth - 100) + 50 * i, displayHeight - 200));
+    pList.add(new PVector(startPos.get(i).x, startPos.get(i).y));
   }
 }
 
@@ -65,13 +69,19 @@ void target(PVector circlePos, PVector circleSize, color colour) {
 }
 
 void mouseClicked(){
-  for (PVector p : pList) {
-    if (dist(p.x, p.y, mousePos.x, mousePos.y) <= (circleHit.x/2) * 0.3) {
+  for (int i = 0; i < numCircles; i++) {
+    if (dist(pList.get(i).x, pList.get(i).y, mousePos.x, mousePos.y) <= (circleHit.x/2) * 0.3) {
       score += 5;
-    } else if (dist(p.x, p.y, mousePos.x, mousePos.y) <= (circleHit.x/2) * 0.7) {
+      pList.get(i).x = startPos.get(i).x;
+      pList.get(i).y = startPos.get(i).y;
+    } else if (dist(pList.get(i).x, pList.get(i).y, mousePos.x, mousePos.y) <= (circleHit.x/2) * 0.7) {
       score += 3;
-    } if (dist(p.x, p.y, mousePos.x, mousePos.y) <= circleHit.x/2) {
+      pList.get(i).x = startPos.get(i).x;
+      pList.get(i).y = startPos.get(i).y;
+    } if (dist(pList.get(i).x, pList.get(i).y, mousePos.x, mousePos.y) <= circleHit.x/2) {
       score += 1;
+      pList.get(i).x = startPos.get(i).x;
+      pList.get(i).y = startPos.get(i).y;
     }
     
   }
@@ -83,15 +93,19 @@ void draw() {
   for (int i = 0; i < numCircles; i++) {
     pList.get(i).add(speedList.get(i));
     pList.get(i).add(vel);
+    
+    randomY = random(0+circleSize.y, displayHeight-circleSize.y);
+    startPos.get(i).y = randomY;
   }
   
   mousePos.x = mouseX;
   mousePos.y = mouseY;
   
   //check
-  for (PVector p : pList) {
-    if (p.x + (circleSize.x / 2) <= 0) {
-      p.x = displayWidth + (circleSize.x / 2);
+  for (int i = 0; i < numCircles; i++) {
+    if (pList.get(i).x + (circleSize.x / 2) <= 0) {
+      pList.get(i).x = displayWidth + (circleSize.x / 2);
+      pList.get(i).y = startPos.get(i).y;
     }
   }
   
