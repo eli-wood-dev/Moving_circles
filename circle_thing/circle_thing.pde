@@ -71,19 +71,18 @@ void target(PVector circlePos, PVector circleSize, color colour) {
 void mouseClicked(){
   for (int i = 0; i < numCircles; i++) {
     if (dist(pList.get(i).x, pList.get(i).y, mousePos.x, mousePos.y) <= (circleHit.x/2) * 0.3) {
-      score += 5;
+      score += speedList.get(i).x * -2;
       pList.get(i).x = startPos.get(i).x;
       pList.get(i).y = startPos.get(i).y;
     } else if (dist(pList.get(i).x, pList.get(i).y, mousePos.x, mousePos.y) <= (circleHit.x/2) * 0.7) {
-      score += 3;
+      score += speedList.get(i).x * -1;
       pList.get(i).x = startPos.get(i).x;
       pList.get(i).y = startPos.get(i).y;
-    } if (dist(pList.get(i).x, pList.get(i).y, mousePos.x, mousePos.y) <= circleHit.x/2) {
-      score += 1;
+    } else if (dist(pList.get(i).x, pList.get(i).y, mousePos.x, mousePos.y) <= circleHit.x/2) {
+      score += speedList.get(i).x / -2;
       pList.get(i).x = startPos.get(i).x;
       pList.get(i).y = startPos.get(i).y;
     }
-    
   }
 }
 
