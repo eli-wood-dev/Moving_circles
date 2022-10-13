@@ -1,10 +1,11 @@
 PVector circleSize;
+PVector circleHit;
 PVector vel;
 PVector mousePos;
-PVector crossSize;
 
 int numCircles = 6;
 int score = 0;
+int crosshairSize = 50;
 
 PVector [] speed = new PVector[numCircles];
 ArrayList<PVector> speedList = new ArrayList<PVector>();
@@ -24,10 +25,11 @@ void setup() {
   ellipseMode(CENTER);
   
   circleSize = new PVector(100, 100);
+  circleHit = new PVector(circleSize.x*1.1, circleSize.y*1.1);
+  
   vel = new PVector(-0, 0);
   
   mousePos = new PVector(0, 0);
-  crossSize = new PVector(50, 50);
   
   for (int i = 0; i < numCircles; i++) {
     speedList.add(new PVector((i + 1) * -2, 0));
@@ -35,18 +37,25 @@ void setup() {
   }
 }
 
-void crosshair(PVector crosshairPos, PVector crosshairSize) {
-  stroke(0);
+void crosshair(PVector crosshairPos) {
+  noFill();
+  stroke(200, 0, 0);
   strokeWeight(5);
-  //ellipse(crosshairPos.x, crosshairPos.y, crosshairSize.x, crosshairSize.y);
+  ellipse(crosshairPos.x, crosshairPos.y, crosshairSize, crosshairSize);
+  ellipse(crosshairPos.x, crosshairPos.y, crosshairSize/10, crosshairSize/10);
+  strokeWeight(4);
+  line(crosshairPos.x, crosshairPos.y - crosshairSize*0.8, crosshairPos.x, crosshairPos.y - crosshairSize*0.3);
+  line(crosshairPos.x, crosshairPos.y + crosshairSize*0.8, crosshairPos.x, crosshairPos.y + crosshairSize*0.3);
+  line(crosshairPos.x - crosshairSize*0.8, crosshairPos.y, crosshairPos.x - crosshairSize*0.3, crosshairPos.y);
+  line(crosshairPos.x + crosshairSize*0.8, crosshairPos.y, crosshairPos.x + crosshairSize*0.3, crosshairPos.y);
   
-  line(crosshairPos.x - crosshairSize.x/2, crosshairPos.y, crosshairPos.x + crosshairSize.x/2, crosshairPos.y);
-  line(crosshairPos.x, crosshairPos.y - crosshairSize.y/2, crosshairPos.x, crosshairPos.y + crosshairSize.y/2);
+  //line(crosshairPos.x - crosshairSize/2, crosshairPos.y, crosshairPos.x + crosshairSize/2, crosshairPos.y);
+  //line(crosshairPos.x, crosshairPos.y - crosshairSize/2, crosshairPos.x, crosshairPos.y + crosshairSize/2);
 }
 
 void mouseClicked(){
   for (PVector p : pList) {
-    if (dist(p.x, p.y, mousePos.x, mousePos.y) <= circleSize.x/2) {
+    if (dist(p.x, p.y, mousePos.x, mousePos.y) <= circleHit.x/2) {
       score += 1;
     }
   }
@@ -81,7 +90,7 @@ void draw() {
     ellipse(pList.get(i).x, pList.get(i).y , circleSize.x, circleSize.y);
   }
   
-  crosshair(mousePos, crossSize);
+  crosshair(mousePos);
   
   fill(0);
   textSize(50);
