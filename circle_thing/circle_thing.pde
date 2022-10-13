@@ -25,6 +25,7 @@ void setup() {
   ellipseMode(CENTER);
   
   circleSize = new PVector(100, 100);
+  //both numbers have to be equal for hit detection to work
   circleHit = new PVector(circleSize.x*1.1, circleSize.y*1.1);
   
   vel = new PVector(-0, 0);
@@ -53,18 +54,31 @@ void crosshair(PVector crosshairPos) {
   //line(crosshairPos.x, crosshairPos.y - crosshairSize/2, crosshairPos.x, crosshairPos.y + crosshairSize/2);
 }
 
+void target(PVector circlePos, PVector circleSize, color colour) {
+  noStroke();
+  fill(0);
+  ellipse(circlePos.x, circlePos.y, circleSize.x, circleSize.y);
+  fill(255);
+  ellipse(circlePos.x, circlePos.y, circleSize.x*0.7, circleSize.y*0.7);
+  fill(colour);
+  ellipse(circlePos.x, circlePos.y, circleSize.x*0.3, circleSize.y*0.3);
+}
+
 void mouseClicked(){
   for (PVector p : pList) {
-    if (dist(p.x, p.y, mousePos.x, mousePos.y) <= circleHit.x/2) {
+    if (dist(p.x, p.y, mousePos.x, mousePos.y) <= (circleHit.x/2) * 0.3) {
+      score += 5;
+    } else if (dist(p.x, p.y, mousePos.x, mousePos.y) <= (circleHit.x/2) * 0.7) {
+      score += 3;
+    } if (dist(p.x, p.y, mousePos.x, mousePos.y) <= circleHit.x/2) {
       score += 1;
     }
+    
   }
 }
 
 void draw() {
   //update
-  circleSize.x = 100;
-  circleSize.y = 100;
   
   for (int i = 0; i < numCircles; i++) {
     pList.get(i).add(speedList.get(i));
@@ -84,10 +98,16 @@ void draw() {
   //draw
   background(100);
   
+  /*
   strokeWeight(0);
   for (int i = 0; i < numCircles; i++) {
     fill(colour[i]);
     ellipse(pList.get(i).x, pList.get(i).y , circleSize.x, circleSize.y);
+  }
+  */
+  
+  for (int i = 0; i < numCircles; i++) {
+    target(pList.get(i), circleSize, colour[i]);
   }
   
   crosshair(mousePos);
